@@ -12,7 +12,7 @@ To use HNDD, install the extension, and it will work automatically on relevant H
 Screenshot
 ----------
 
-The following image shows the results produced by HNDD on a duplicate HN submission page.
+The following image shows the links produced by HNDD on a duplicate HN submission page.
 
 ![Screenshot](screenshots/screenshot.png)
 
