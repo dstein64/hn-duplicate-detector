@@ -1,4 +1,4 @@
-// Returns the ID corresponding to the current Hacker News page
+// Returns the ID corresponding to the current Hacker News page.
 var getStoryId = function() {
     var qs = window.location.search.substring(1);
     var items = qs.split('&');
@@ -11,7 +11,7 @@ var getStoryId = function() {
     return null;
 }
 
-// Returns the story URL corresponding to the current Hacker News page
+// Returns the story URL corresponding to the current Hacker News page.
 var getStoryUrl = function() {
     storylinks = document.getElementsByClassName('storylink');
     if (storylinks.length === 0) return null;
@@ -19,7 +19,9 @@ var getStoryUrl = function() {
     return storylink.href;
 }
 
-// TODO: documentation on Promise and returned list
+// Returns a promise that returns a list of stories if resolved and an error
+// if rejected.
+// A story includes id, date (integer timestamp), title, points, and num_comments.
 var getStories = function(url) {
     var api_endpoint = 'https://hn.algolia.com/api/v1/search?query=';
     api_endpoint += encodeURIComponent(url);
@@ -56,6 +58,7 @@ var getStories = function(url) {
     return promise;
 }
 
+// Adds a story link to the subtitle of a Hacker News discussion page.
 var addDuplicateLink = function(story) {
     var subtexts = document.getElementsByClassName('subtext');
     if (subtexts.length === 0) return;
