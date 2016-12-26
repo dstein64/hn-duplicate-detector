@@ -93,7 +93,10 @@ var main = function() {
     if (!url) return;
     if (url === document.location.href) return;
     getStories(url).then(function(stories) {
-        stories = stories.filter(function(story) {return story.id != id})
+        // remove current page from stories
+        stories = stories.filter(function(story) {return story.id != id});
+        // sort stories by date (newest first)
+        stories.sort(function(a, b){return b.date-a.date});
         for (var i = 0; i < stories.length; ++i) {
             var story = stories[i];
             addDuplicateLink(story);

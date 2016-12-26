@@ -14,7 +14,7 @@ Screenshot
 
 The following image shows the links produced by HNDD on a duplicate HN submission page.
 
-![Screenshot](screenshots/screenshot.png)
+![Screenshot](screenshots/screenshot-cropped.png)
 
 License
 -------
