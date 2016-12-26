@@ -5,6 +5,7 @@
 # easier to see args in an array than a string
 ARGS=()
 ARGS+=("src/")
+ARGS+=("icons/")
 ARGS+=("manifest.json")
 
 # exclude
