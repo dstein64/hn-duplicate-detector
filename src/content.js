@@ -63,11 +63,10 @@ var addDuplicateLink = function(story) {
     var subtexts = document.getElementsByClassName('subtext');
     if (subtexts.length === 0) return;
     var subtext = subtexts[0];
-    var separator = document.createTextNode(" | "); 
-    subtext.appendChild(separator);
-    var dup_link = document.createElement("A");
-    dup_link.href = 'https://news.ycombinator.com/item?id=' + story.id;
-    dup_link.textContent = story.id;
+    var separator = document.createTextNode(" | ");
+    
+    var dup_container = document.createElement("SPAN");
+    
     var monthNames = [
         "Jan", "Feb", "Mar", "Apr", "May", "Jun",
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -77,12 +76,23 @@ var addDuplicateLink = function(story) {
     var month = date.getMonth();
     var year = date.getFullYear();
     var date_formatted = monthNames[month] + ' ' + day + ', ' + year;
-    //date_formatted += ', ' + date.toLocaleTimeString();
-    dup_link.title = date_formatted + '\n'
-                   + story.points + ' points\n' 
-                   + story.num_comments + ' comments\n';
+    
+    dup_container.title = date_formatted + '\n'
+                        + story.points + ' points\n' 
+                        + story.num_comments + ' comments\n';    
+    
+    var dup_link = document.createElement("A");
+    dup_link.href = 'https://news.ycombinator.com/item?id=' + story.id;
+    dup_link.textContent = story.id;
     dup_link.style.color = 'ff6600'; // HN orange
-    subtext.appendChild(dup_link);
+    
+    var comment_count_text = document.createTextNode(" (" + story.num_comments + ")");
+    
+    dup_container.appendChild(dup_link)
+    dup_container.appendChild(comment_count_text)
+    
+    subtext.appendChild(separator);
+    subtext.appendChild(dup_container);
 }
 
 
