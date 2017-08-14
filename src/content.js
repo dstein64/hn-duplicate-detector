@@ -19,9 +19,10 @@ var getStoryUrl = function() {
     return storylink.href;
 }
 
-// Returns a promise that returns a list of stories if resolved and an error
-// if rejected.
-// A story includes id, date (integer timestamp), title, points, and num_comments.
+// Returns a promise that returns a list of stories if resolved and an
+// error if rejected.
+// A story includes id, date (integer timestamp), title, points, and
+// num_comments.
 var getStories = function(url) {
     var api_endpoint = 'https://hn.algolia.com/api/v1/search?query=';
     api_endpoint += encodeURIComponent(url);
@@ -47,7 +48,8 @@ var getStories = function(url) {
                 }
                 resolve(stories);
             } else {
-                reject(Error('API error; error code:' + request.statusText));
+                reject(Error('API error; error code:' + 
+                             request.statusText));
             }
         };
         request.onerror = function() {
@@ -77,16 +79,22 @@ var addDuplicateLink = function(story) {
     var year = date.getFullYear();
     var date_formatted = monthNames[month] + ' ' + day + ', ' + year;
     
-    dup_container.title = date_formatted + '\n'
-                        + story.points + ' points\n' 
-                        + story.num_comments + ' comments\n';    
+    title_date = date_formatted;
+    title_points = story.points + ' point';
+    if (story.points != 1) title_points += 's';
+    title_comments = story.num_comments + ' comment';
+    if (story.num_comments != 1) title_comments += 's';
+    dup_container.title = title_date + '\n'
+                        + title_points + '\n' 
+                        + title_comments;    
     
     var dup_link = document.createElement("A");
     dup_link.href = 'https://news.ycombinator.com/item?id=' + story.id;
     dup_link.textContent = story.id;
     dup_link.style.color = 'ff6600'; // HN orange
     
-    var comment_count_text = document.createTextNode(" (" + story.num_comments + ")");
+    var comment_count_text = document.createTextNode(
+        " (" + story.num_comments + ")");
     
     dup_container.appendChild(dup_link)
     dup_container.appendChild(comment_count_text)
@@ -104,7 +112,8 @@ var main = function() {
     if (url === document.location.href) return;
     getStories(url).then(function(stories) {
         // remove current page from stories
-        stories = stories.filter(function(story) {return story.id != id});
+        stories = stories.filter(
+            function(story) {return story.id != id});
         // sort stories by date (newest first)
         stories.sort(function(a, b){return b.date-a.date});
         for (var i = 0; i < stories.length; ++i) {
