@@ -4,11 +4,12 @@
       "matches": [ "https://news.ycombinator.com/item?id=*" ]
    } ],
    "description": "Detects duplicate HN submissions.",
-   "manifest_version": 2,
-   "name": "Hacker News Duplicate Detector",
-   "version": "1.5",
    "icons": {
       "48": "icons/icon-48.png",
       "128": "icons/icon-128.png"
-   }
+   },
+   "manifest_version": 2,
+   "name": "Hacker News Duplicate Detector",
+   "permissions": ["https://hn.algolia.com/api/v1/search?query=*"],
+   "version": "1.6"
 }
