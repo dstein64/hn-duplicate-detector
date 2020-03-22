@@ -99,7 +99,6 @@ var addDuplicateLink = function(story) {
     subtext.appendChild(dup_container);
 };
 
-
 var main = function() {
     var id = getStoryId();
     if (!id) return;
