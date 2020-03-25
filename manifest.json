@@ -11,5 +11,5 @@
    "manifest_version": 2,
    "name": "Hacker News Duplicate Detector",
    "permissions": ["https://hn.algolia.com/api/v1/search?query=*"],
-   "version": "1.6"
+   "version": "1.7"
 }
