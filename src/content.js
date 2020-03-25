@@ -21,7 +21,7 @@ var getStoryUrl = function() {
 
 // Removes protocol portion of a URL
 var removeProtocol = function(url) {
-    var parsed = new URL(url, 'https://news.ycombinator.com/news');
+    var parsed = new URL(url, 'https://news.ycombinator.com/item');
     // The protocol field includes colon but no slashes,
     // so add 2 to also exclude slashes.
     return parsed.href.substring(parsed.protocol.length + 2);
