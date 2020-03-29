@@ -115,7 +115,7 @@ var addDuplicateLink = function(story) {
     subtext.appendChild(dup_container);
 };
 
-var main = function() {
+var main = function(options) {
     var id = getStoryId();
     if (!id) return;
     var url = getStoryUrl();
@@ -123,8 +123,11 @@ var main = function() {
     if (url === document.location.href) return;
     getStories(url).then(function(stories) {
         // remove current page from stories
-        stories = stories.filter(
-            function(story) {return story.id !== id});
+        stories = stories.filter(function(story) {return story.id !== id});
+        // remove stories with zero comments
+        if (options.omitZeroComments) {
+            stories = stories.filter(function(story) {return story.num_comments > 0});
+        }
         // sort stories by date (newest first)
         stories.sort(function(a, b){return b.date-a.date});
         for (var i = 0; i < stories.length; ++i) {
@@ -136,4 +139,6 @@ var main = function() {
     });
 };
 
-main();
+chrome.storage.local.get(['options'], function(result) {
+    main(result.options);
+});
