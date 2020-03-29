@@ -45,6 +45,16 @@ document.addEventListener('DOMContentLoaded', function() {
             statusMessage('Options Reverted', 1200);
         });
     });
+
+    // decouple label for touch devices, since clicking shows the tooltip.
+    if (window.matchMedia('(pointer: coarse)').matches) {
+        let toRemove = new Set(['omitZeroComments-checkbox']);
+        let labels = document.getElementsByTagName('label');
+        for (let i = 0; i < labels.length; ++i) {
+            if (toRemove.has(labels[i].htmlFor))
+                labels[i].removeAttribute('for');
+        }
+    }
 });
 
 // save options on any user input
