@@ -13,7 +13,7 @@ var getStoryId = function() {
 
 // Returns the story URL corresponding to the current Hacker News page.
 var getStoryUrl = function() {
-    storylinks = document.getElementsByClassName('storylink');
+    storylinks = document.getElementsByClassName('titlelink');
     if (storylinks.length === 0) return null;
     storylink = storylinks[0];
     return storylink.href;
