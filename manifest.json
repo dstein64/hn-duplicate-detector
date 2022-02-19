@@ -1,11 +1,9 @@
 {
    "background": {
-      "scripts": [
-         "src/background.js"
-      ]
+      "scripts": ["src/background.js"]
    },
    "content_scripts": [ {
-      "js": [ "src/content.js" ],
+      "js": ["src/module.js", "src/content.js"],
       "matches": [ "https://news.ycombinator.com/item?id=*" ]
    } ],
    "description": "Detects duplicate HN submissions.",
