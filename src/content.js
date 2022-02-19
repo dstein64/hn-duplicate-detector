@@ -1,10 +1,10 @@
 // Returns the ID corresponding to the current Hacker News page.
-var getStoryId = function() {
-    var qs = window.location.search.substring(1);
-    var items = qs.split('&');
-    for (var i = 0; i < items.length; ++i) {
-        var item = items[i];
-        var pair = item.split('=');
+const getStoryId = function() {
+    const qs = window.location.search.substring(1);
+    const items = qs.split('&');
+    for (let i = 0; i < items.length; ++i) {
+        const item = items[i];
+        const pair = item.split('=');
         if (pair.length !== 2) continue;
         if (pair[0] === 'id') return pair[1];
     }
@@ -12,16 +12,16 @@ var getStoryId = function() {
 };
 
 // Returns the story URL corresponding to the current Hacker News page.
-var getStoryUrl = function() {
-    storylinks = document.getElementsByClassName('titlelink');
-    if (storylinks.length === 0) return null;
-    storylink = storylinks[0];
-    return storylink.href;
+const getStoryUrl = function() {
+    const titlelinks = document.getElementsByClassName('titlelink');
+    if (titlelinks.length === 0) return null;
+    const titlelink = titlelinks[0];
+    return titlelink.href;
 };
 
 // Removes protocol portion of a URL
-var removeProtocol = function(url) {
-    var parsed = new URL(url, 'https://news.ycombinator.com/item');
+const removeProtocol = function(url) {
+    const parsed = new URL(url, 'https://news.ycombinator.com/item');
     // The protocol field includes colon but no slashes,
     // so add 2 to also exclude slashes.
     return parsed.href.substring(parsed.protocol.length + 2);
@@ -38,27 +38,27 @@ var removeProtocol = function(url) {
 //          points to http://jlongster.com/How-I-Became-Better-Programmer
 //        https://news.ycombinator.com/item?id=22678350 (submitted in 2020)
 //          points to https://jlongster.com/How-I-Became-Better-Programmer
-var getStories = function(url) {
-    var api_endpoint = 'https://hn.algolia.com/api/v1/search?query=';
+const getStories = function(url) {
+    let api_endpoint = 'https://hn.algolia.com/api/v1/search?query=';
     api_endpoint += encodeURIComponent(removeProtocol(url));
     api_endpoint += '&restrictSearchableAttributes=url';
-    var promise = new Promise(function(resolve, reject) {
-        var request = new XMLHttpRequest();
+    const promise = new Promise(function(resolve, reject) {
+        const request = new XMLHttpRequest();
         request.open('GET', api_endpoint);
         request.onload = function() {
             if (request.status === 200) {
-                var stories = [];
-                var response = JSON.parse(request.response);
-                for (var i = 0; i < response.hits.length; ++i) {
-                    var hit = response.hits[i];
+                const stories = [];
+                const response = JSON.parse(request.response);
+                for (let i = 0; i < response.hits.length; ++i) {
+                    const hit = response.hits[i];
                     if (removeProtocol(hit.url) !== removeProtocol(url))
                         continue;
-                    var story = {
-                            'id': hit.objectID,
-                            'date': hit.created_at_i,
-                            'title': hit.title,
-                            'points': hit.points,
-                            'num_comments': hit.num_comments
+                    const story = {
+                        'id': hit.objectID,
+                        'date': hit.created_at_i,
+                        'title': hit.title,
+                        'points': hit.points,
+                        'num_comments': hit.num_comments
                     };
                     stories.push(story);
                 }
@@ -76,37 +76,37 @@ var getStories = function(url) {
 };
 
 // Adds a story link to the subtitle of a Hacker News discussion page.
-var addDuplicateLink = function(story) {
-    var subtexts = document.getElementsByClassName('subtext');
+const addDuplicateLink = function(story) {
+    const subtexts = document.getElementsByClassName('subtext');
     if (subtexts.length === 0) return;
-    var subtext = subtexts[0];
-    var separator = document.createTextNode(' | ');
+    const subtext = subtexts[0];
+    const separator = document.createTextNode(' | ');
 
-    var dup_container = document.createElement('SPAN');
+    const dup_container = document.createElement('SPAN');
 
-    var monthNames = [
+    const monthNames = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
       ];
-    var date = new Date(story.date * 1000);
-    var day = date.getDate();
-    var month = date.getMonth();
-    var year = date.getFullYear();
-    var title_date = monthNames[month] + ' ' + day + ', ' + year;
-    var title_points = story.points + ' point';
+    const date = new Date(story.date * 1000);
+    const day = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    const title_date = monthNames[month] + ' ' + day + ', ' + year;
+    let title_points = story.points + ' point';
     if (story.points !== 1) title_points += 's';
-    var title_comments = story.num_comments + ' comment';
+    let title_comments = story.num_comments + ' comment';
     if (story.num_comments !== 1) title_comments += 's';
     dup_container.title = title_date + '\n'
                         + title_points + '\n'
                         + title_comments;
 
-    var dup_link = document.createElement('A');
+    const dup_link = document.createElement('A');
     dup_link.href = 'https://news.ycombinator.com/item?id=' + story.id;
     dup_link.textContent = story.id;
     dup_link.style.color = 'ff6600'; // HN orange
 
-    var comment_count_text = document.createTextNode(' (' + story.num_comments + ')');
+    const comment_count_text = document.createTextNode(' (' + story.num_comments + ')');
 
     dup_container.appendChild(dup_link);
     dup_container.appendChild(comment_count_text);
@@ -115,10 +115,10 @@ var addDuplicateLink = function(story) {
     subtext.appendChild(dup_container);
 };
 
-var main = function(options) {
-    var id = getStoryId();
+const main = function(options) {
+    const id = getStoryId();
     if (!id) return;
-    var url = getStoryUrl();
+    const url = getStoryUrl();
     if (!url) return;
     if (url === document.location.href) return;
     getStories(url).then(function(stories) {
@@ -130,8 +130,8 @@ var main = function(options) {
         }
         // sort stories by date (newest first)
         stories.sort(function(a, b){return b.date-a.date});
-        for (var i = 0; i < stories.length; ++i) {
-            var story = stories[i];
+        for (let i = 0; i < stories.length; ++i) {
+            const story = stories[i];
             addDuplicateLink(story);
         }
     }, function(Error) {
