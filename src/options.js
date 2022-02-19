@@ -49,9 +49,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (window.matchMedia('(pointer: coarse)').matches) {
         let toRemove = new Set(['omitZeroComments-checkbox']);
         let labels = document.getElementsByTagName('label');
-        for (let i = 0; i < labels.length; ++i) {
-            if (toRemove.has(labels[i].htmlFor))
-                labels[i].removeAttribute('for');
+        for (const label of labels) {
+            if (toRemove.has(label.htmlFor))
+                label.removeAttribute('for');
         }
     }
 });
@@ -59,8 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // save options on any user input
 (function() {
     const inputs = document.getElementsByTagName('input');
-    for (let i = 0; i < inputs.length; i++) {
-        const input = inputs[i];
+    for (const input of inputs) {
         input.addEventListener('change', saveOptions);
         input.addEventListener('input', saveOptions);
     }

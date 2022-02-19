@@ -2,8 +2,7 @@
 const getStoryId = function() {
     const qs = window.location.search.substring(1);
     const items = qs.split('&');
-    for (let i = 0; i < items.length; ++i) {
-        const item = items[i];
+    for (const item of items) {
         const pair = item.split('=');
         if (pair.length !== 2) continue;
         if (pair[0] === 'id') return pair[1];
@@ -49,8 +48,7 @@ const getStories = function(url) {
             if (request.status === 200) {
                 const stories = [];
                 const response = JSON.parse(request.response);
-                for (let i = 0; i < response.hits.length; ++i) {
-                    const hit = response.hits[i];
+                for (const hit of response.hits) {
                     if (removeProtocol(hit.url) !== removeProtocol(url))
                         continue;
                     const story = {
@@ -130,8 +128,7 @@ const main = function(options) {
         }
         // sort stories by date (newest first)
         stories.sort(function(a, b){return b.date-a.date});
-        for (let i = 0; i < stories.length; ++i) {
-            const story = stories[i];
+        for (const story of stories) {
             addDuplicateLink(story);
         }
     }, function(Error) {
