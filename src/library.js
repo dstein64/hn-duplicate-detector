@@ -1,10 +1,10 @@
 // Returns the td.subtext under the main link.
-this.getSubtext = function() {
+this.getSubtext = function(document) {
     return document.querySelector('td.subtext');
 };
 
 // Returns the ID corresponding to the current Hacker News page.
-this.getStoryId = function() {
+this.getStoryId = function(window) {
     const qs = window.location.search.substring(1);
     const items = qs.split('&');
     for (const item of items) {
@@ -16,7 +16,7 @@ this.getStoryId = function() {
 };
 
 // Returns the story URL corresponding to the current Hacker News page.
-this.getStoryUrl = function() {
+this.getStoryUrl = function(document) {
     const titlelinks = document.getElementsByClassName('titlelink');
     if (titlelinks.length === 0) return null;
     const titlelink = titlelinks[0];
@@ -24,8 +24,8 @@ this.getStoryUrl = function() {
 };
 
 // Removes protocol portion of a URL
-this.removeProtocol = function(url) {
-    const parsed = new URL(url, 'https://news.ycombinator.com/item');
+this.removeProtocol = function(window, url) {
+    const parsed = new window.URL(url, 'https://news.ycombinator.com/item');
     // The protocol field includes colon but no slashes,
     // so add 2 to also exclude slashes.
     return parsed.href.substring(parsed.protocol.length + 2);
@@ -42,19 +42,19 @@ this.removeProtocol = function(url) {
 //          points to http://jlongster.com/How-I-Became-Better-Programmer
 //        https://news.ycombinator.com/item?id=22678350 (submitted in 2020)
 //          points to https://jlongster.com/How-I-Became-Better-Programmer
-this.getStories = function(url) {
-    let api_endpoint = 'https://hn.algolia.com/api/v1/search?query=';
-    api_endpoint += encodeURIComponent(removeProtocol(url));
-    api_endpoint += '&restrictSearchableAttributes=url';
-    const promise = new Promise(function(resolve, reject) {
-        const request = new XMLHttpRequest();
-        request.open('GET', api_endpoint);
-        request.onload = function() {
+this.getStories = function(window, url) {
+    const removeProtocol = this.removeProtocol;
+    let apiEndpoint = 'https://hn.algolia.com/api/v1/search?query=';
+    apiEndpoint += window.encodeURIComponent(removeProtocol(window, url));
+    apiEndpoint += '&restrictSearchableAttributes=url';
+    const promise = new window.Promise((resolve, reject) => {
+        const request = new window.XMLHttpRequest();
+        request.onload = () => {
             if (request.status === 200) {
                 const stories = [];
                 const response = JSON.parse(request.response);
                 for (const hit of response.hits) {
-                    if (removeProtocol(hit.url) !== removeProtocol(url))
+                    if (removeProtocol(window, hit.url) !== removeProtocol(window, url))
                         continue;
                     const story = {
                         'id': hit.objectID,
@@ -70,10 +70,50 @@ this.getStories = function(url) {
                 reject(Error('API error; error code:' + request.statusText));
             }
         };
-        request.onerror = function() {
+        request.onerror = () => {
             reject(Error('Network error.'));
         };
+        request.open('GET', apiEndpoint);
         request.send();
     });
     return promise;
+};
+
+// Adds a story link to the subtitle of a Hacker News discussion page.
+this.addDuplicateLink = function(document, story) {
+    const subtext = this.getSubtext(document);
+    if (subtext === null) return;
+    const separator = document.createTextNode(' | ');
+
+    const dupContainer = document.createElement('SPAN');
+
+    const monthNames = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    const date = new Date(story.date * 1000);
+    const day = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    const title_date = monthNames[month] + ' ' + day + ', ' + year;
+    let title_points = story.points + ' point';
+    if (story.points !== 1) title_points += 's';
+    let title_comments = story.num_comments + ' comment';
+    if (story.num_comments !== 1) title_comments += 's';
+    dupContainer.title = title_date + '\n'
+        + title_points + '\n'
+        + title_comments;
+
+    const dupLink = document.createElement('A');
+    dupLink.href = 'https://news.ycombinator.com/item?id=' + story.id;
+    dupLink.textContent = story.id;
+    dupLink.style.color = 'ff6600';  // HN orange
+
+    const commentCountText = document.createTextNode(' (' + story.num_comments + ')');
+
+    dupContainer.appendChild(dupLink);
+    dupContainer.appendChild(commentCountText);
+
+    subtext.appendChild(separator);
+    subtext.appendChild(dupContainer);
 };
