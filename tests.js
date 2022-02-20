@@ -63,7 +63,6 @@ https.get(url, resp => {
             assert.match(subtext, new RegExp(
                 /^\d+ points by mmphosis on Aug 11, 2017 \| hide \| past \| favorite/.source
                 + / \| 9366583 \(\d+\) \| 10023818 \(\d+\) \| 14990099 \(\d+\)$/.source));
-            assert(false);  // TODO: delete this
         }, function(error) {
             assert.fail(error.message);
         });
