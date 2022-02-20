@@ -1,3 +1,8 @@
+this.isItemPage = (window) => {
+    return window.location.hostname === 'news.ycombinator.com'
+        && window.location.pathname === '/item';
+};
+
 // Returns the td.subtext under the main link.
 this.getSubtext = (document) => {
     return document.querySelector('td.subtext');

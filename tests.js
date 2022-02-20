@@ -22,6 +22,11 @@ https.get(url, resp => {
         });
         const window = dom.window;
         const document = window.document;
+        assert(library.isItemPage(window));
+        assert(!library.isItemPage(
+            new JSDOM('', {url: 'https://news.ycombinator.com/'}).window));
+        assert(!library.isItemPage(
+            new JSDOM('', {url: 'https://news.ycombinator.com/front'}).window));
         let subtext = library.getSubtext(document);
         subtext = subtext.textContent.trim();
         subtext = subtext.replace(/\s\s+/g, ' ');

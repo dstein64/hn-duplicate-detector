@@ -1,4 +1,5 @@
 const main = function(options) {
+    if (!isItemPage(window)) return;
     const id = getStoryId(window);
     if (!id) return;
     const url = getStoryUrl(document);
