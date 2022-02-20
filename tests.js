@@ -2,7 +2,7 @@
 //  $ node tests.js
 
 // Without this, there's: "Error: ReferenceError: request is not defined"
-global.request = require('request');
+//global.request = require('request');
 
 const assert = require('assert');
 const https = require('https');
