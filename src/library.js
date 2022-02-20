@@ -1,10 +1,10 @@
 // Returns the td.subtext under the main link.
-this.getSubtext = function(document) {
+this.getSubtext = (document) => {
     return document.querySelector('td.subtext');
 };
 
 // Returns the ID corresponding to the current Hacker News page.
-this.getStoryId = function(window) {
+this.getStoryId = (window) => {
     const qs = window.location.search.substring(1);
     const items = qs.split('&');
     for (const item of items) {
@@ -16,7 +16,7 @@ this.getStoryId = function(window) {
 };
 
 // Returns the story URL corresponding to the current Hacker News page.
-this.getStoryUrl = function(document) {
+this.getStoryUrl = (document) => {
     const titlelinks = document.getElementsByClassName('titlelink');
     if (titlelinks.length === 0) return null;
     const titlelink = titlelinks[0];
@@ -24,7 +24,7 @@ this.getStoryUrl = function(document) {
 };
 
 // Removes protocol portion of a URL
-this.removeProtocol = function(url) {
+this.removeProtocol = (url) => {
     const parsed = new URL(url, 'https://news.ycombinator.com/item');
     // The protocol field includes colon but no slashes,
     // so add 2 to also exclude slashes.
@@ -42,7 +42,7 @@ this.removeProtocol = function(url) {
 //          points to http://jlongster.com/How-I-Became-Better-Programmer
 //        https://news.ycombinator.com/item?id=22678350 (submitted in 2020)
 //          points to https://jlongster.com/How-I-Became-Better-Programmer
-this.getStories = function(window, url) {
+this.getStories = (window, url) => {
     const removeProtocol = this.removeProtocol;
     let apiEndpoint = 'https://hn.algolia.com/api/v1/search?query=';
     apiEndpoint += encodeURIComponent(removeProtocol(url));
@@ -80,7 +80,7 @@ this.getStories = function(window, url) {
 };
 
 // Adds a story link to the subtitle of a Hacker News discussion page.
-this.addDuplicateLink = function(document, story) {
+this.addDuplicateLink = (document, story) => {
     const subtext = this.getSubtext(document);
     if (subtext === null) return;
     const separator = document.createTextNode(' | ');
