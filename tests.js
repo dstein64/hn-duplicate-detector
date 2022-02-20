@@ -29,7 +29,7 @@ https.get(url, resp => {
         assert.equal(library.getStoryId(window), '14990099');
         assert.equal(library.getStoryUrl(document), storyUrl);
         assert.equal(
-            library.removeProtocol(window, storyUrl),
+            library.removeProtocol(storyUrl),
             storyUrl.substring('https://'.length));
         library.getStories(window, storyUrl).then(function(stories) {
             // sort stories by date (oldest first)

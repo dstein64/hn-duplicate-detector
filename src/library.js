@@ -24,8 +24,8 @@ this.getStoryUrl = function(document) {
 };
 
 // Removes protocol portion of a URL
-this.removeProtocol = function(window, url) {
-    const parsed = new window.URL(url, 'https://news.ycombinator.com/item');
+this.removeProtocol = function(url) {
+    const parsed = new URL(url, 'https://news.ycombinator.com/item');
     // The protocol field includes colon but no slashes,
     // so add 2 to also exclude slashes.
     return parsed.href.substring(parsed.protocol.length + 2);
@@ -45,16 +45,16 @@ this.removeProtocol = function(window, url) {
 this.getStories = function(window, url) {
     const removeProtocol = this.removeProtocol;
     let apiEndpoint = 'https://hn.algolia.com/api/v1/search?query=';
-    apiEndpoint += window.encodeURIComponent(removeProtocol(window, url));
+    apiEndpoint += encodeURIComponent(removeProtocol(url));
     apiEndpoint += '&restrictSearchableAttributes=url';
-    const promise = new window.Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
         const request = new window.XMLHttpRequest();
         request.onload = () => {
             if (request.status === 200) {
                 const stories = [];
                 const response = JSON.parse(request.response);
                 for (const hit of response.hits) {
-                    if (removeProtocol(window, hit.url) !== removeProtocol(window, url))
+                    if (removeProtocol(hit.url) !== removeProtocol(url))
                         continue;
                     const story = {
                         'id': hit.objectID,
