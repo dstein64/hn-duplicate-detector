@@ -11,6 +11,13 @@ const library = require(__dirname + '/src/library.js');
 const url = 'https://news.ycombinator.com/item?id=14990099';
 const storyUrl = 'https://www.youtube.com/watch?v=wf-BqAjZb8M';
 
+// Given a subtext element, return the normalized text.
+const normalize = (subtext) => {
+    let result = subtext.textContent.trim();
+    result = result.replace(/\s\s+/g, ' ');
+    return result;
+};
+
 https.get(url, resp => {
     let data = '';
     resp.on('data', chunk => {
@@ -27,9 +34,7 @@ https.get(url, resp => {
             new JSDOM('', {url: 'https://news.ycombinator.com/'}).window));
         assert(!library.isItemPage(
             new JSDOM('', {url: 'https://news.ycombinator.com/front'}).window));
-        let subtext = library.getSubtext(document);
-        subtext = subtext.textContent.trim();
-        subtext = subtext.replace(/\s\s+/g, ' ');
+        const subtext = normalize(library.getSubtext(document));
         assert.match(subtext, /^\d+ points by mmphosis on Aug 11, 2017 \| hide \| past \| favorite$/);
         assert.equal(library.getStoryId(window), '14990099');
         assert.equal(library.getStoryUrl(document), storyUrl);
@@ -59,15 +64,21 @@ https.get(url, resp => {
                 "Raymond Hettinger: Best practices for beautiful intelligible code (2015) [video]");
             assert(stories[2].points >= 2);
             assert(stories[2].num_comments >= 0);
+            const _class = '_hn-duplicate-detector_';
             for (const story of stories) {
-                library.addDuplicateLink(document, story);
+                library.addDuplicateLink(document, story, _class);
             }
-            let subtext = library.getSubtext(document);
-            subtext = subtext.textContent.trim();
-            subtext = subtext.replace(/\s\s+/g, ' ');
+            let subtext = normalize(library.getSubtext(document));
             assert.match(subtext, new RegExp(
                 /^\d+ points by mmphosis on Aug 11, 2017 \| hide \| past \| favorite/.source
                 + / \| 9366583 \(\d+\) \| 10023818 \(\d+\) \| 14990099 \(\d+\)$/.source));
+            for (const e of [...document.getElementsByClassName(_class)]) {
+                e.parentElement.removeChild(e);
+            }
+            subtext = normalize(library.getSubtext(document));
+            assert.match(
+                subtext,
+                /^\d+ points by mmphosis on Aug 11, 2017 \| hide \| past \| favorite$/);
         }, function(error) {
             assert.fail(error.message);
         });

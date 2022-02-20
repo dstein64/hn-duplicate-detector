@@ -85,12 +85,14 @@ this.getStories = (window, url) => {
 };
 
 // Adds a story link to the subtitle of a Hacker News discussion page.
-this.addDuplicateLink = (document, story) => {
+this.addDuplicateLink = (document, story, _class = null) => {
     const subtext = this.getSubtext(document);
     if (subtext === null) return;
     const separator = document.createTextNode(' | ');
 
     const dupContainer = document.createElement('SPAN');
+    if (_class !== null)
+        dupContainer.className = _class;
 
     const monthNames = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -116,9 +118,9 @@ this.addDuplicateLink = (document, story) => {
 
     const commentCountText = document.createTextNode(' (' + story.num_comments + ')');
 
+    dupContainer.appendChild(separator);
     dupContainer.appendChild(dupLink);
     dupContainer.appendChild(commentCountText);
 
-    subtext.appendChild(separator);
     subtext.appendChild(dupContainer);
 };
