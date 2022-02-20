@@ -34,9 +34,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // load default options
         document.getElementById('defaults').addEventListener('click', function() {
-            const defaults = chrome.extension.getBackgroundPage().defaultOptions();
-            loadOptions(defaults);
-            statusMessage('Defaults Loaded', 1200);
+            chrome.runtime.sendMessage({method: 'getDefaultOptions'}, (response) => {
+                loadOptions(response);
+                statusMessage('Defaults Loaded', 1200);
+            });
         });
 
         document.getElementById('revert').addEventListener('click', function() {

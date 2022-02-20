@@ -1,21 +1,22 @@
 {
    "background": {
-      "scripts": ["src/background.js"]
+      "service_worker": "src/background.js"
    },
    "content_scripts": [ {
       "js": ["src/library.js", "src/main.js"],
       "matches": [ "https://news.ycombinator.com/item?id=*" ]
    } ],
    "description": "Detects duplicate HN submissions.",
+   "host_permissions": ["https://hn.algolia.com/api/v1/search?query=*"],
    "icons": {
       "48": "icons/icon-48.png",
       "128": "icons/icon-128.png"
    },
-   "manifest_version": 2,
+   "manifest_version": 3,
    "name": "Hacker News Duplicate Detector",
    "options_ui": {
       "page": "src/options.html"
    },
-   "permissions": ["https://hn.algolia.com/api/v1/search?query=*", "storage"],
+   "permissions": ["storage"],
    "version": "1.8.2"
 }
