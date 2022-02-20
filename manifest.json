@@ -3,7 +3,7 @@
       "scripts": ["src/background.js"]
    },
    "content_scripts": [ {
-      "js": ["src/library.js", "src/content.js"],
+      "js": ["src/library.js", "src/main.js"],
       "matches": [ "https://news.ycombinator.com/item?id=*" ]
    } ],
    "description": "Detects duplicate HN submissions.",
