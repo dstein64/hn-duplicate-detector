@@ -1,3 +1,5 @@
+[![build][badge_thumbnail]][badge_link]
+
 Hacker News Duplicate Detector
 ==============================
 
@@ -25,3 +27,6 @@ Acknowledgments
 ---------------
 
 HNDD uses Algolia's [HN Search API](https://hn.algolia.com/api).
+
+[badge_link]: https://github.com/dstein64/hn-duplicate-detector/actions/workflows/build.yml
+[badge_thumbnail]: https://github.com/dstein64/hn-duplicate-detector/actions/workflows/build.yml/badge.svg
