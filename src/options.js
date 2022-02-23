@@ -48,10 +48,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // decouple label for touch devices, since clicking shows the tooltip.
     if (window.matchMedia('(pointer: coarse)').matches) {
-        let toRemove = new Set(['omitZeroComments-checkbox']);
         let labels = document.getElementsByTagName('label');
         for (const label of labels) {
-            if (toRemove.has(label.htmlFor))
+            if (label.querySelector('.tooltip'))
                 label.removeAttribute('for');
         }
     }

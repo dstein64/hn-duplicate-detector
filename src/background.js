@@ -6,7 +6,7 @@ const defaultOptions = function() {
 
 // set missing options using defaults
 (function() {
-    chrome.storage.local.get({options: {}}, function(result) {
+    chrome.storage.local.get(['options'], function(result) {
         const options = result.options;
         const defaults = defaultOptions();
         const keys = Object.keys(defaults);
