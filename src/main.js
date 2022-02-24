@@ -27,5 +27,6 @@ const main = function(options) {
 };
 
 chrome.storage.local.get(['options'], function(result) {
+    if (!result.options) return;
     main(result.options);
 });

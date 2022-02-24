@@ -17,5 +17,5 @@
       "page": "src/options.html"
    },
    "permissions": ["https://hn.algolia.com/api/v1/search?query=*", "storage"],
-   "version": "1.8.5"
+   "version": "1.8.6"
 }
