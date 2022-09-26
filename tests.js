@@ -71,7 +71,10 @@ https.get(url, resp => {
             let subtext = normalize(library.getSubtext(document));
             assert.match(subtext, new RegExp(
                 /^\d+ points by mmphosis on Aug 11, 2017 \| hide \| past \| favorite/.source
-                + / \| 9366583 \(\d+\) \| 10023818 \(\d+\) \| 14990099 \(\d+\)$/.source));
+                + / \| 9366583 \(\d+\)/.source
+                + / \| 10023818 \(\d+\)/.source
+                + / \| 14990099 \(\d+\)/.source
+                + / \| 32069668 \(\d+\)$/.source));
             for (const e of [...document.getElementsByClassName(_class)]) {
                 e.parentElement.removeChild(e);
             }
