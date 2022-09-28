@@ -22,10 +22,9 @@ this.getStoryId = (window) => {
 
 // Returns the story URL corresponding to the current Hacker News page.
 this.getStoryUrl = (document) => {
-    const titlelinks = document.getElementsByClassName('titlelink');
-    if (titlelinks.length === 0) return null;
-    const titlelink = titlelinks[0];
-    return titlelink.href;
+    const anchor = document.querySelector('.titleline a');
+    if (anchor === null) return null;
+    return anchor.href;
 };
 
 // Removes protocol portion of a URL
