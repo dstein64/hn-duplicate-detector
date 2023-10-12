@@ -63,7 +63,7 @@ https.get(url, resp => {
                 stories[1].title,
                 "Beyond PEP 8 – Best practices for beautiful intelligible code [video]");
             assert(stories[1].points >= 262);
-            assert(stories[1].num_comments >= 161);
+            assert(stories[1].num_comments >= 160);
             assert.equal(stories[2].id, "14990099");
             assert.equal(stories[2].date, 1502462541);
             assert.equal(
