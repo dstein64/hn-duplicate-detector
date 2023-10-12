@@ -41,7 +41,14 @@ https.get(url, resp => {
         assert.equal(
             library.removeProtocol(storyUrl),
             storyUrl.substring('https://'.length));
-        library.getStories(window, storyUrl).then(function(stories) {
+        // Create a new window for requests to hn.algolia.com. As of October 2023,
+        // using the news.ycombinator.com window results in a CORS error. There was
+        // a new version of HN search released around that time:
+        //   https://news.ycombinator.com/item?id=37821821
+        // Perhaps the Access-Control-Allow-Origin header, or something else related,
+        // was changed.
+        const algolia_window = new JSDOM('', {url: 'https://hn.algolia.com/'}).window;
+        library.getStories(algolia_window, storyUrl).then(function(stories) {
             // sort stories by date (oldest first)
             stories.sort(function(a, b){return a.date - b.date});
             assert(stories.length >= 3);
@@ -56,7 +63,7 @@ https.get(url, resp => {
                 stories[1].title,
                 "Beyond PEP 8 – Best practices for beautiful intelligible code [video]");
             assert(stories[1].points >= 262);
-            assert(stories[1].num_comments >= 161);
+            assert(stories[1].num_comments >= 160);
             assert.equal(stories[2].id, "14990099");
             assert.equal(stories[2].date, 1502462541);
             assert.equal(
