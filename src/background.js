@@ -6,6 +6,7 @@
 function defaultOptions() {
     const options = Object.create(null);
     options['omitZeroComments'] = true;
+    options['linkColor'] = '#ff6600';  // HN orange
     return options;
 }
 

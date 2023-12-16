@@ -3,12 +3,13 @@
     <title><em>Hacker News Duplicate Detector</em> Extension Options</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-#checkboxes {
-    line-height: 200%;
-}
-
 body {
     margin-top: 20px;
+}
+
+table#table td:first-child {
+    text-align: center;
+    padding-right: 5px;
 }
 
 a.tooltip {
@@ -57,11 +58,29 @@ a.tooltip span {
 <div id="container">
 <h3><em>Hacker News Duplicate Detector</em> v<span id="version"></span></h3>
 <h2>Options</h2>
-<input type="checkbox" id="omitZeroComments-checkbox">
-<label for="omitZeroComments-checkbox">
-    <a class="tooltip"><span>When enabled, HN duplicates with zero comments will not be
-        displayed.</span>Omit Zero-Comments</a>
-</label>
+<table id="table">
+    <tbody>
+        <tr>
+            <td>
+                <input type="checkbox" id="omitZeroComments-checkbox">
+            </td>
+            <td>
+                <label for="omitZeroComments-checkbox">
+                    <a class="tooltip"><span>When enabled, HN duplicates with zero comments will not
+                        be displayed.</span>Omit Zero-Comments</a>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="color" id="linkColor-color">
+            </td>
+            <td>
+                <label for="linkColor-color">Link Color</label>
+            </td>
+        </tr>
+    </tbody>
+</table>
 <br><br>
 <button id="defaults">Defaults</button>
 <button id="revert">Revert</button>

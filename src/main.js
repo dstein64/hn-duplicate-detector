@@ -19,7 +19,7 @@ const main = function(options) {
         // sort stories by date (newest first)
         stories.sort(function(a, b){return b.date - a.date});
         for (const story of stories) {
-            addDuplicateLink(document, story, _class);
+            addDuplicateLink(document, story, _class, options.linkColor);
         }
     }, function(error) {
         console.log(error);
