@@ -14,11 +14,13 @@ const statusMessage = function(message, time) {
 const saveOptions = function() {
     const options = Object.create(null);
     options['omitZeroComments'] = document.getElementById('omitZeroComments-checkbox').checked;
+    options['linkColor'] = document.getElementById('linkColor-color').value;
     chrome.storage.local.set({options: options});
 };
 
 const loadOptions = function(options) {
     document.getElementById('omitZeroComments-checkbox').checked = options['omitZeroComments'];
+    document.getElementById('linkColor-color').value = options['linkColor'];
     // options must be saved when loaded to keep everything in sync
     // (since there is no specific "save" button")
     // onchange/oninput won't fire when loading options with javascript,

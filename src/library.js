@@ -83,8 +83,9 @@ this.getStories = (window, url) => {
     return promise;
 };
 
-// Adds a story link to the subtitle of a Hacker News discussion page.
-this.addDuplicateLink = (document, story, _class = null) => {
+// Adds a story link to the subtitle of a Hacker News discussion page. The default
+// color is HN orange.
+this.addDuplicateLink = (document, story, _class = null, linkColor = '#ff6600') => {
     const subtext = this.getSubtext(document);
     if (subtext === null) return;
     const separator = document.createTextNode(' | ');
@@ -113,7 +114,7 @@ this.addDuplicateLink = (document, story, _class = null) => {
     const dupLink = document.createElement('A');
     dupLink.href = 'https://news.ycombinator.com/item?id=' + story.id;
     dupLink.textContent = story.id;
-    dupLink.style.color = 'ff6600';  // HN orange
+    dupLink.style.color = linkColor;
 
     const commentCountText = document.createTextNode(' (' + story.num_comments + ')');
 
