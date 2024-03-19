@@ -1,14 +1,9 @@
-// WARN: For functions that are called from the options page, proper scope is
-// necessary (e.g., using a function declaration beginning with a 'function',
-// or using a function expression beginning with 'var', but not a function
-// expression beginning with 'let' or 'const').
-
-function defaultOptions() {
+const defaultOptions = function() {
     const options = Object.create(null);
     options['omitZeroComments'] = true;
     options['linkColor'] = '#ff6600';  // HN orange
     return options;
-}
+};
 
 // set missing options using defaults
 (function() {
@@ -24,3 +19,10 @@ function defaultOptions() {
         chrome.storage.local.set({options: options});
     });
 })();
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    const method = request.method;
+    if (method === 'getDefaultOptions') {
+        sendResponse(defaultOptions());
+    }
+});

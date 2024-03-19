@@ -1,1 +1,5 @@
-/archive.zip
+.DS_Store
+Thumbs.db
+/archive_chrome.zip
+/archive_firefox.zip
+/manifest.json
