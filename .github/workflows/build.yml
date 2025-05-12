@@ -38,4 +38,6 @@ jobs:
         run: npm install jsdom
 
       - name: Test
+        env:
+          https_proxy: ${{ secrets.HTTPS_PROXY }}
         run: node tests.js

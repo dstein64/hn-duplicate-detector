@@ -3,10 +3,20 @@
 
 const assert = require('assert');
 const https = require('https');
+const {HttpsProxyAgent} = require('https-proxy-agent');
 
 const {JSDOM} = require('jsdom');
 
 const library = require(__dirname + '/src/library.js');
+
+let https_agent = undefined;
+const https_proxy = process.env.https_proxy;
+if (https_proxy !== undefined) {
+    https_agent = new HttpsProxyAgent(https_proxy);
+}
+const options = {
+    agent: https_agent,
+};
 
 const url = 'https://news.ycombinator.com/item?id=36646163';
 const storyUrl = 'https://tixy.land/';
@@ -18,7 +28,7 @@ const normalize = (subtext) => {
     return result;
 };
 
-https.get(url, resp => {
+https.get(url, options, resp => {
     assert.equal(resp.statusCode, 200);
     let data = '';
     resp.on('data', chunk => {
