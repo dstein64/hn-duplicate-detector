@@ -8,8 +8,8 @@ const {JSDOM} = require('jsdom');
 
 const library = require(__dirname + '/src/library.js');
 
-const url = 'https://news.ycombinator.com/item?id=14990099';
-const storyUrl = 'https://www.youtube.com/watch?v=wf-BqAjZb8M';
+const url = 'https://news.ycombinator.com/item?id=36646163';
+const storyUrl = 'https://tixy.land/';
 
 // Given a subtext element, return the normalized text.
 const normalize = (subtext) => {
@@ -36,8 +36,8 @@ https.get(url, resp => {
         assert(!library.isItemPage(
             new JSDOM('', {url: 'https://news.ycombinator.com/front'}).window));
         const subtext = normalize(library.getSubtext(document));
-        assert.match(subtext, /^\d+ points by mmphosis on Aug 11, 2017 \| hide \| past \| favorite$/);
-        assert.equal(library.getStoryId(window), '14990099');
+        assert.match(subtext, /^\d+ points by murkle on July 8, 2023 \| hide \| past \| favorite \| \d+\scomments$/);
+        assert.equal(library.getStoryId(window), '36646163');
         assert.equal(library.getStoryUrl(document), storyUrl);
         assert.equal(
             library.removeProtocol(storyUrl),
@@ -52,44 +52,50 @@ https.get(url, resp => {
         library.getStories(algolia_window, storyUrl).then(function(stories) {
             // sort stories by date (oldest first)
             stories.sort(function(a, b){return a.date - b.date});
-            assert(stories.length >= 3);
-            assert.equal(stories[0].id, "9366583");
-            assert.equal(stories[0].date, 1428915160);
-            assert.equal(stories[0].title, "Raymond Hettinger – Beyond PEP 8 – PyCon 2015");
-            assert(stories[0].points >= 3);
-            assert(stories[0].num_comments >= 2);
-            assert.equal(stories[1].id, "10023818");
-            assert.equal(stories[1].date, 1438969545);
-            assert.equal(
-                stories[1].title,
-                "Beyond PEP 8 – Best practices for beautiful intelligible code [video]");
-            assert(stories[1].points >= 262);
-            assert(stories[1].num_comments >= 160);
-            assert.equal(stories[2].id, "14990099");
-            assert.equal(stories[2].date, 1502462541);
-            assert.equal(
-                stories[2].title,
-                "Raymond Hettinger: Best practices for beautiful intelligible code (2015) [video]");
-            assert(stories[2].points >= 2);
+            assert(stories.length >= 4);
+
+            assert.equal(stories[0].id, '24974534');
+            assert.equal(stories[0].date, 1604358367);
+            assert.equal(stories[0].title, 'Minimal 16x16 Dots Coding Environment');
+            assert(stories[0].points >= 186);
+            assert(stories[0].num_comments >= 37);
+
+            assert.equal(stories[1].id, '36646163');
+            assert.equal(stories[1].date, 1688834899);
+            assert.equal(stories[1].title, 'Tixy.land');
+            assert(stories[1].points >= 3);
+            assert(stories[1].num_comments >= 2);
+
+            assert.equal(stories[2].id, '39261430');
+            assert.equal(stories[2].date, 1707142621);
+            assert.equal(stories[2].title, 'Tixy – Creative Code Golfing');
+            assert(stories[2].points >= 1);
             assert(stories[2].num_comments >= 0);
+
+            assert.equal(stories[3].id, '43942881');
+            assert.equal(stories[3].date, 1746845798);
+            assert.equal(stories[3].title, 'A simple 16x16 dot animation from simple math rules');
+            assert(stories[3].points >= 478);
+            assert(stories[3].num_comments >= 91);
+
             const _class = '_hn-duplicate-detector_';
             for (const story of stories) {
                 library.addDuplicateLink(document, story, _class);
             }
             let subtext = normalize(library.getSubtext(document));
             assert.match(subtext, new RegExp(
-                /^\d+ points by mmphosis on Aug 11, 2017 \| hide \| past \| favorite/.source
-                + / \| 9366583 \(\d+\)/.source
-                + / \| 10023818 \(\d+\)/.source
-                + / \| 14990099 \(\d+\)/.source
-                + / \| 32069668 \(\d+\)$/.source));
+                /^\d+ points by murkle on July 8, 2023 \| hide \| past \| favorite \| \d+\scomments/.source
+                + / \| 24974534 \(\d+\)/.source
+                + / \| 36646163 \(\d+\)/.source
+                + / \| 39261430 \(\d+\)/.source
+                + / \| 43942881 \(\d+\)$/.source));
             for (const e of [...document.getElementsByClassName(_class)]) {
                 e.parentElement.removeChild(e);
             }
             subtext = normalize(library.getSubtext(document));
             assert.match(
                 subtext,
-                /^\d+ points by mmphosis on Aug 11, 2017 \| hide \| past \| favorite$/);
+                /^\d+ points by murkle on July 8, 2023 \| hide \| past \| favorite \| \d+\scomments$/);
         }, function(error) {
             assert.fail(error.message);
         });
