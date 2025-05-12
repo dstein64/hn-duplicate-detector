@@ -19,6 +19,7 @@ const normalize = (subtext) => {
 };
 
 https.get(url, resp => {
+    assert.equal(resp.statusCode, 200);
     let data = '';
     resp.on('data', chunk => {
         data += chunk;
