@@ -3,8 +3,8 @@
 
 const assert = require('assert');
 const https = require('https');
-const {HttpsProxyAgent} = require('https-proxy-agent');
 
+const {HttpsProxyAgent} = require('https-proxy-agent');
 const {JSDOM} = require('jsdom');
 
 const library = require(__dirname + '/src/library.js');
