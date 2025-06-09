@@ -29,12 +29,12 @@ const normalize = (subtext) => {
 };
 
 https.get(url, options, resp => {
-    assert.equal(resp.statusCode, 200);
     let data = '';
     resp.on('data', chunk => {
         data += chunk;
     });
     resp.on('end', () => {
+        assert.equal(resp.statusCode, 200, data);
         const dom = new JSDOM(data, {
             url: url
         });
