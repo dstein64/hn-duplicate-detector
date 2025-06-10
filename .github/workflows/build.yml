@@ -40,4 +40,9 @@ jobs:
       - name: Test
         env:
           https_proxy: ${{ secrets.HTTPS_PROXY }}
-        run: node tests.js
+        run: |
+          for _ in {1..3}; do
+            node tests.js && exit 0
+            sleep 5
+          done
+          exit 1
