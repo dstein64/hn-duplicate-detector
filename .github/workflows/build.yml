@@ -38,10 +38,9 @@ jobs:
         run: npm install jsdom
 
       - name: Test
+        env:
+          https_proxy: ${{ secrets.HTTPS_PROXY }}
         run: |
-          if [ -n "${{ secrets.HTTPS_PROXY }}" ]; then
-            export HTTPS_PROXY="${{ secrets.HTTPS_PROXY }}"
-          fi
           for _ in {1..10}; do
             node tests.js && exit 0
             sleep 30
